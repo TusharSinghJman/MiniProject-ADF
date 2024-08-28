@@ -112,9 +112,8 @@
 				"userProperties": [],
 				"typeProperties": {
 					"source": {
-						"type": "AzureSqlSource",
-						"queryTimeout": "02:00:00",
-						"partitionOption": "None"
+						"type": "MongoDbAtlasSource",
+						"batchSize": 100
 					},
 					"sink": {
 						"type": "AzureSqlSink",
@@ -123,19 +122,11 @@
 						"tableOption": "autoCreate",
 						"disableMetricsCollection": false
 					},
-					"enableStaging": false,
-					"translator": {
-						"type": "TabularTranslator",
-						"typeConversion": true,
-						"typeConversionSettings": {
-							"allowDataTruncation": true,
-							"treatBooleanAsNumber": false
-						}
-					}
+					"enableStaging": false
 				},
 				"inputs": [
 					{
-						"referenceName": "Form_responses_raw_data",
+						"referenceName": "Form_Responses",
 						"type": "DatasetReference"
 					}
 				],
