@@ -1,0 +1,16 @@
+{
+	"name": "Admin",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "MongoDbAtlas1",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "MongoDbAtlasCollection",
+		"schema": [],
+		"typeProperties": {
+			"collection": "admins"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

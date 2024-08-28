@@ -1,0 +1,17 @@
+{
+	"name": "Users",
+	"properties": {
+		"description": "Users data stored during signup",
+		"linkedServiceName": {
+			"referenceName": "MongoDbAtlas1",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "MongoDbAtlasCollection",
+		"schema": [],
+		"typeProperties": {
+			"collection": "users"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

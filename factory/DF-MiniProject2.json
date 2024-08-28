@@ -1,0 +1,9 @@
+{
+	"name": "DF-MiniProject2",
+	"location": "centralindia",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "b2d2651e-c279-451c-a5aa-4678ab503ea8",
+		"tenantId": "2800c0a0-70e9-49be-8733-faeaa6aced99"
+	}
+}
