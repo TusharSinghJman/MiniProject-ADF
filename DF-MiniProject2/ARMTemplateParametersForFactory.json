@@ -1,0 +1,27 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"value": "DF-MiniProject2"
+		},
+		"AzureSQL_MiniProject2_password": {
+			"value": ""
+		},
+		"MongoDbAtlas1_connectionString": {
+			"value": ""
+		},
+		"AzureSQL_MiniProject2_properties_typeProperties_server": {
+			"value": "server-tushar.database.windows.net"
+		},
+		"AzureSQL_MiniProject2_properties_typeProperties_database": {
+			"value": "DB-MiniProject2"
+		},
+		"AzureSQL_MiniProject2_properties_typeProperties_userName": {
+			"value": "tsetoffice"
+		},
+		"MongoDbAtlas1_properties_typeProperties_database": {
+			"value": "SurveyApp"
+		}
+	}
+}
