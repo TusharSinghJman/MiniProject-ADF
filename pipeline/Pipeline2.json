@@ -1,6 +1,7 @@
 {
-	"name": "pipeline2",
+	"name": "Pipeline2",
 	"properties": {
+		"description": "Copy the web scraped data from the blob to the SQL database",
 		"activities": [
 			{
 				"name": "Misumi Products",
