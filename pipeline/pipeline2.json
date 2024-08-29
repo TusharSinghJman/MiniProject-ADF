@@ -3,7 +3,8 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "Copy data1",
+				"name": "Misumi Products",
+				"description": "Import the dataset from the blob to the SQL database",
 				"type": "Copy",
 				"dependsOn": [],
 				"policy": {
