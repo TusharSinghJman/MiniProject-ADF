@@ -5,14 +5,52 @@
 		"typeProperties": {
 			"sources": [
 				{
-					"name": "source1"
+					"dataset": {
+						"referenceName": "Misumi_Items_per_ProductCategories",
+						"type": "DatasetReference"
+					},
+					"name": "ItemsPerCategories"
 				}
 			],
-			"sinks": [],
-			"transformations": [],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "Misumi_Items_DB",
+						"type": "DatasetReference"
+					},
+					"name": "ItemsSink"
+				}
+			],
+			"transformations": [
+				{
+					"name": "updateDescriptionColumn",
+					"description": "remove any invalid characters from the column"
+				}
+			],
 			"scriptLines": [
-				"source(allowSchemaDrift: true,",
-				"     validateSchema: false) ~> source1"
+				"source(output(",
+				"          categoryCode as string,",
+				"          categoryName as string,",
+				"          seriesCode as string,",
+				"          seriesName as string,",
+				"          brandName as string,",
+				"          earliestShipping as string,",
+				"          description as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> ItemsPerCategories",
+				"ItemsPerCategories derive(description = regexReplace(description, \"^[a-zA-Z0-9_.-]\", \"\")) ~> updateDescriptionColumn",
+				"updateDescriptionColumn sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError') ~> ItemsSink"
 			]
 		}
 	}
