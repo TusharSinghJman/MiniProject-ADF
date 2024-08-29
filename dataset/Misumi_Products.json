@@ -9,8 +9,8 @@
 		"type": "AzureSqlTable",
 		"schema": [],
 		"typeProperties": {
-			"schema": "dbo",
-			"table": "misumi_products"
+			"schema": "raw",
+			"table": "product_categories"
 		}
 	}
 }
