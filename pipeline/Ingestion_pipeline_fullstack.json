@@ -67,42 +67,6 @@
 									"name": "Password",
 									"type": "String"
 								}
-							},
-							{
-								"source": {
-									"path": "$['username']"
-								},
-								"sink": {
-									"name": "Username",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"path": "$['designation']"
-								},
-								"sink": {
-									"name": "Designation",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"path": "$['email']"
-								},
-								"sink": {
-									"name": "Email",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"path": "$['password']"
-								},
-								"sink": {
-									"name": "Password",
-									"type": "String"
-								}
 							}
 						]
 					}
@@ -391,7 +355,9 @@
 					"sink": {
 						"type": "AzureSqlSink",
 						"writeBehavior": "insert",
-						"sqlWriterUseTableLock": false
+						"sqlWriterUseTableLock": false,
+						"tableOption": "autoCreate",
+						"disableMetricsCollection": false
 					},
 					"enableStaging": false,
 					"translator": {
