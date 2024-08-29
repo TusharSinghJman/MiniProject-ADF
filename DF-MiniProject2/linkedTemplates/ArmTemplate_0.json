@@ -112,27 +112,6 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/Admin_raw_data')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "AzureSQL_MiniProject2",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "AzureSqlTable",
-				"schema": [],
-				"typeProperties": {
-					"schema": "dbo",
-					"table": "admin_raw_data"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/AzureSQL_MiniProject2')]"
-			]
-		},
-		{
 			"name": "[concat(parameters('factoryName'), '/Form_Responses')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -153,27 +132,6 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/Form_responses_raw_data')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "AzureSQL_MiniProject2",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "AzureSqlTable",
-				"schema": [],
-				"typeProperties": {
-					"schema": "dbo",
-					"table": "formResponses_raw_data"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/AzureSQL_MiniProject2')]"
-			]
-		},
-		{
 			"name": "[concat(parameters('factoryName'), '/Forms')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -191,48 +149,6 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/MongoDbAtlas1')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/Forms_raw_data')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "AzureSQL_MiniProject2",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "AzureSqlTable",
-				"schema": [],
-				"typeProperties": {
-					"schema": "dbo",
-					"table": "forms_raw_data"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/AzureSQL_MiniProject2')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/Question_raw_data')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "AzureSQL_MiniProject2",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "AzureSqlTable",
-				"schema": [],
-				"typeProperties": {
-					"schema": "dbo",
-					"table": "questions_raw_data"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/AzureSQL_MiniProject2')]"
 			]
 		},
 		{
@@ -277,7 +193,7 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/Users_raw_data')]",
+			"name": "[concat(parameters('factoryName'), '/Users_Data_DB')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -289,8 +205,8 @@
 				"type": "AzureSqlTable",
 				"schema": [],
 				"typeProperties": {
-					"schema": "dbo",
-					"table": "users_raw_data"
+					"schema": "raw",
+					"table": "users"
 				}
 			},
 			"dependsOn": [
@@ -298,7 +214,91 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/Products_Misumi')]",
+			"name": "[concat(parameters('factoryName'), '/Admin_Data_DB')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureSQL_MiniProject2",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [],
+				"typeProperties": {
+					"schema": "raw",
+					"table": "admin"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureSQL_MiniProject2')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Forms_Data_DB')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureSQL_MiniProject2",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [],
+				"typeProperties": {
+					"schema": "raw",
+					"table": "forms"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureSQL_MiniProject2')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/FormResponses_Data_DB')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureSQL_MiniProject2",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [],
+				"typeProperties": {
+					"schema": "raw",
+					"table": "formResponses"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureSQL_MiniProject2')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Question_Data_DB')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureSQL_MiniProject2",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [],
+				"typeProperties": {
+					"schema": "raw",
+					"table": "questions"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureSQL_MiniProject2')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Misumi_ProductCategories')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -339,7 +339,64 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/Misumi_Products')]",
+			"name": "[concat(parameters('factoryName'), '/Misumi_Items_per_ProductCategories')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "Blob_miniproject2",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "item_data.csv",
+						"container": "container-miniproject2"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "categoryCode",
+						"type": "String"
+					},
+					{
+						"name": "categoryName",
+						"type": "String"
+					},
+					{
+						"name": "seriesCode",
+						"type": "String"
+					},
+					{
+						"name": "seriesName",
+						"type": "String"
+					},
+					{
+						"name": "brandName",
+						"type": "String"
+					},
+					{
+						"name": "earliestShipping",
+						"type": "String"
+					},
+					{
+						"name": "description",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/Blob_miniproject2')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Misumi_Items_DB')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -351,7 +408,28 @@
 				"type": "AzureSqlTable",
 				"schema": [],
 				"typeProperties": {
-					"schema": "dbo",
+					"schema": "raw",
+					"table": "misumi_items"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureSQL_MiniProject2')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Misumi_Products_DB')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureSQL_MiniProject2",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [],
+				"typeProperties": {
+					"schema": "raw",
 					"table": "misumi_products"
 				}
 			},
@@ -360,7 +438,28 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/Pipeline1')]",
+			"name": "[concat(parameters('factoryName'), '/Merged_Items_Products')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureSQL_MiniProject2",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [],
+				"typeProperties": {
+					"schema": "raw",
+					"table": "merged_items_products"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureSQL_MiniProject2')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Ingestion_pipeline_fullstack')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -409,7 +508,7 @@
 											"path": "$['Designations']"
 										},
 										"sink": {
-											"name": "Designations",
+											"name": "Designation",
 											"type": "String"
 										}
 									},
@@ -443,7 +542,7 @@
 						],
 						"outputs": [
 							{
-								"referenceName": "Users_raw_data",
+								"referenceName": "Users_Data_DB",
 								"type": "DatasetReference",
 								"parameters": {}
 							}
@@ -453,14 +552,9 @@
 						"name": "Admin data",
 						"description": "copy from mongo server to sql db",
 						"type": "Copy",
-						"dependsOn": [
-							{
-								"activity": "Users Data",
-								"dependencyConditions": [
-									"Completed"
-								]
-							}
-						],
+						"state": "Inactive",
+						"onInactiveMarkAs": "Succeeded",
+						"dependsOn": [],
 						"policy": {
 							"timeout": "0.12:00:00",
 							"retry": 0,
@@ -524,7 +618,7 @@
 						],
 						"outputs": [
 							{
-								"referenceName": "Admin_raw_data",
+								"referenceName": "Admin_Data_DB",
 								"type": "DatasetReference",
 								"parameters": {}
 							}
@@ -534,14 +628,9 @@
 						"name": "Form Responses data",
 						"description": "copy from mongo server to sql db ",
 						"type": "Copy",
-						"dependsOn": [
-							{
-								"activity": "Admin data",
-								"dependencyConditions": [
-									"Completed"
-								]
-							}
-						],
+						"state": "Inactive",
+						"onInactiveMarkAs": "Succeeded",
+						"dependsOn": [],
 						"policy": {
 							"timeout": "0.12:00:00",
 							"retry": 0,
@@ -571,8 +660,7 @@
 											"path": "$['id']"
 										},
 										"sink": {
-											"name": "id",
-											"type": "String"
+											"name": "FormID"
 										}
 									},
 									{
@@ -580,8 +668,7 @@
 											"path": "$['Username']"
 										},
 										"sink": {
-											"name": "Username",
-											"type": "String"
+											"name": "Username"
 										}
 									},
 									{
@@ -589,8 +676,7 @@
 											"path": "$['Responses'][0]['Question']"
 										},
 										"sink": {
-											"name": "Question",
-											"type": "String"
+											"name": "Question"
 										}
 									},
 									{
@@ -598,11 +684,11 @@
 											"path": "$['Responses'][0]['Response'][0]"
 										},
 										"sink": {
-											"name": "Answer",
-											"type": "String"
+											"name": "Response"
 										}
 									}
-								]
+								],
+								"collectionReference": "$['Responses']"
 							}
 						},
 						"inputs": [
@@ -614,7 +700,7 @@
 						],
 						"outputs": [
 							{
-								"referenceName": "Form_responses_raw_data",
+								"referenceName": "FormResponses_Data_DB",
 								"type": "DatasetReference",
 								"parameters": {}
 							}
@@ -624,14 +710,9 @@
 						"name": "Forms Data",
 						"description": "copy from mongo server to sql db",
 						"type": "Copy",
-						"dependsOn": [
-							{
-								"activity": "Form Responses data",
-								"dependencyConditions": [
-									"Completed"
-								]
-							}
-						],
+						"state": "Inactive",
+						"onInactiveMarkAs": "Succeeded",
+						"dependsOn": [],
 						"policy": {
 							"timeout": "0.12:00:00",
 							"retry": 0,
@@ -661,8 +742,7 @@
 											"path": "$['formAbout']"
 										},
 										"sink": {
-											"name": "formAbout",
-											"type": "String"
+											"name": "Form Description"
 										}
 									},
 									{
@@ -670,8 +750,7 @@
 											"path": "$['formAvailable'][0]"
 										},
 										"sink": {
-											"name": "Access",
-											"type": "String"
+											"name": "Access To"
 										}
 									},
 									{
@@ -679,8 +758,7 @@
 											"path": "$['formValues'][0]['id']['$numberInt']"
 										},
 										"sink": {
-											"name": "FormID",
-											"type": "String"
+											"name": "FormID"
 										}
 									},
 									{
@@ -688,8 +766,7 @@
 											"path": "$['formValues'][0]['question']"
 										},
 										"sink": {
-											"name": "Question",
-											"type": "String"
+											"name": "Question"
 										}
 									},
 									{
@@ -697,8 +774,7 @@
 											"path": "$['formValues'][0]['questionType']"
 										},
 										"sink": {
-											"name": "Question Type",
-											"type": "String"
+											"name": "Question Type"
 										}
 									},
 									{
@@ -706,11 +782,11 @@
 											"path": "$['formValues'][0]['options'][0]"
 										},
 										"sink": {
-											"name": "Options",
-											"type": "String"
+											"name": "Options"
 										}
 									}
-								]
+								],
+								"collectionReference": "$['formValues']"
 							}
 						},
 						"inputs": [
@@ -722,7 +798,7 @@
 						],
 						"outputs": [
 							{
-								"referenceName": "Forms_raw_data",
+								"referenceName": "Forms_Data_DB",
 								"type": "DatasetReference",
 								"parameters": {}
 							}
@@ -732,14 +808,7 @@
 						"name": "Questions Data",
 						"description": "copy from mongo server to sql db",
 						"type": "Copy",
-						"dependsOn": [
-							{
-								"activity": "Forms Data",
-								"dependencyConditions": [
-									"Completed"
-								]
-							}
-						],
+						"dependsOn": [],
 						"policy": {
 							"timeout": "0.12:00:00",
 							"retry": 0,
@@ -769,8 +838,7 @@
 											"path": "$['id']['$numberInt']"
 										},
 										"sink": {
-											"name": "ID",
-											"type": "String"
+											"name": "FormID"
 										}
 									},
 									{
@@ -778,8 +846,7 @@
 											"path": "$['question']"
 										},
 										"sink": {
-											"name": "question",
-											"type": "String"
+											"name": "Question"
 										}
 									},
 									{
@@ -787,8 +854,7 @@
 											"path": "$['questionType']"
 										},
 										"sink": {
-											"name": "questionType",
-											"type": "String"
+											"name": "Question Type"
 										}
 									},
 									{
@@ -796,11 +862,11 @@
 											"path": "$['options'][0]"
 										},
 										"sink": {
-											"name": "Options",
-											"type": "String"
+											"name": "Options"
 										}
 									}
-								]
+								],
+								"collectionReference": "$['options']"
 							}
 						},
 						"inputs": [
@@ -812,7 +878,7 @@
 						],
 						"outputs": [
 							{
-								"referenceName": "Question_raw_data",
+								"referenceName": "Question_Data_DB",
 								"type": "DatasetReference",
 								"parameters": {}
 							}
@@ -826,22 +892,23 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/Users')]",
-				"[concat(variables('factoryId'), '/datasets/Users_raw_data')]",
+				"[concat(variables('factoryId'), '/datasets/Users_Data_DB')]",
 				"[concat(variables('factoryId'), '/datasets/Admin')]",
-				"[concat(variables('factoryId'), '/datasets/Admin_raw_data')]",
+				"[concat(variables('factoryId'), '/datasets/Admin_Data_DB')]",
 				"[concat(variables('factoryId'), '/datasets/Form_Responses')]",
-				"[concat(variables('factoryId'), '/datasets/Form_responses_raw_data')]",
+				"[concat(variables('factoryId'), '/datasets/FormResponses_Data_DB')]",
 				"[concat(variables('factoryId'), '/datasets/Forms')]",
-				"[concat(variables('factoryId'), '/datasets/Forms_raw_data')]",
+				"[concat(variables('factoryId'), '/datasets/Forms_Data_DB')]",
 				"[concat(variables('factoryId'), '/datasets/Questions')]",
-				"[concat(variables('factoryId'), '/datasets/Question_raw_data')]"
+				"[concat(variables('factoryId'), '/datasets/Question_Data_DB')]"
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/pipeline2')]",
+			"name": "[concat(parameters('factoryName'), '/Ingestion_pipeline_webScraping')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
+				"description": "Copy the web scraped data from the blob to the SQL database",
 				"activities": [
 					{
 						"name": "Misumi Products",
@@ -886,8 +953,7 @@
 											"physicalType": "String"
 										},
 										"sink": {
-											"name": "Item ",
-											"type": "String",
+											"name": "ItemCategory",
 											"physicalType": "nvarchar"
 										}
 									},
@@ -898,8 +964,7 @@
 											"physicalType": "String"
 										},
 										"sink": {
-											"name": "Sub Category",
-											"type": "String",
+											"name": "SubCategory",
 											"physicalType": "nvarchar"
 										}
 									},
@@ -925,14 +990,14 @@
 						},
 						"inputs": [
 							{
-								"referenceName": "Products_Misumi",
+								"referenceName": "Misumi_ProductCategories",
 								"type": "DatasetReference",
 								"parameters": {}
 							}
 						],
 						"outputs": [
 							{
-								"referenceName": "Misumi_Products",
+								"referenceName": "Misumi_Products_DB",
 								"type": "DatasetReference",
 								"parameters": {}
 							}
@@ -945,8 +1010,8 @@
 				"annotations": []
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/Products_Misumi')]",
-				"[concat(variables('factoryId'), '/datasets/Misumi_Products')]"
+				"[concat(variables('factoryId'), '/datasets/Misumi_ProductCategories')]",
+				"[concat(variables('factoryId'), '/datasets/Misumi_Products_DB')]"
 			]
 		}
 	]
