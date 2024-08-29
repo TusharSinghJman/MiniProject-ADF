@@ -46,7 +46,7 @@
 									"path": "$['Designations']"
 								},
 								"sink": {
-									"name": "Designations",
+									"name": "Designation",
 									"type": "String"
 								}
 							},
@@ -67,6 +67,42 @@
 									"name": "Password",
 									"type": "String"
 								}
+							},
+							{
+								"source": {
+									"path": "$['username']"
+								},
+								"sink": {
+									"name": "Username",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['designation']"
+								},
+								"sink": {
+									"name": "Designation",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['email']"
+								},
+								"sink": {
+									"name": "Email",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['password']"
+								},
+								"sink": {
+									"name": "Password",
+									"type": "String"
+								}
 							}
 						]
 					}
@@ -79,7 +115,7 @@
 				],
 				"outputs": [
 					{
-						"referenceName": "Users_raw_data",
+						"referenceName": "Users_Data_DB",
 						"type": "DatasetReference"
 					}
 				]
@@ -88,14 +124,9 @@
 				"name": "Admin data",
 				"description": "copy from mongo server to sql db",
 				"type": "Copy",
-				"dependsOn": [
-					{
-						"activity": "Users Data",
-						"dependencyConditions": [
-							"Completed"
-						]
-					}
-				],
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
+				"dependsOn": [],
 				"policy": {
 					"timeout": "0.12:00:00",
 					"retry": 0,
@@ -158,7 +189,7 @@
 				],
 				"outputs": [
 					{
-						"referenceName": "Admin_raw_data",
+						"referenceName": "Admin_Data_DB",
 						"type": "DatasetReference"
 					}
 				]
@@ -167,14 +198,9 @@
 				"name": "Form Responses data",
 				"description": "copy from mongo server to sql db ",
 				"type": "Copy",
-				"dependsOn": [
-					{
-						"activity": "Admin data",
-						"dependencyConditions": [
-							"Completed"
-						]
-					}
-				],
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
+				"dependsOn": [],
 				"policy": {
 					"timeout": "0.12:00:00",
 					"retry": 0,
@@ -204,8 +230,7 @@
 									"path": "$['id']"
 								},
 								"sink": {
-									"name": "id",
-									"type": "String"
+									"name": "FormID"
 								}
 							},
 							{
@@ -213,8 +238,7 @@
 									"path": "$['Username']"
 								},
 								"sink": {
-									"name": "Username",
-									"type": "String"
+									"name": "Username"
 								}
 							},
 							{
@@ -222,8 +246,7 @@
 									"path": "$['Responses'][0]['Question']"
 								},
 								"sink": {
-									"name": "Question",
-									"type": "String"
+									"name": "Question"
 								}
 							},
 							{
@@ -231,11 +254,11 @@
 									"path": "$['Responses'][0]['Response'][0]"
 								},
 								"sink": {
-									"name": "Answer",
-									"type": "String"
+									"name": "Response"
 								}
 							}
-						]
+						],
+						"collectionReference": "$['Responses']"
 					}
 				},
 				"inputs": [
@@ -246,7 +269,7 @@
 				],
 				"outputs": [
 					{
-						"referenceName": "Form_responses_raw_data",
+						"referenceName": "FormResponses_Data_DB",
 						"type": "DatasetReference"
 					}
 				]
@@ -255,14 +278,9 @@
 				"name": "Forms Data",
 				"description": "copy from mongo server to sql db",
 				"type": "Copy",
-				"dependsOn": [
-					{
-						"activity": "Form Responses data",
-						"dependencyConditions": [
-							"Completed"
-						]
-					}
-				],
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
+				"dependsOn": [],
 				"policy": {
 					"timeout": "0.12:00:00",
 					"retry": 0,
@@ -292,8 +310,7 @@
 									"path": "$['formAbout']"
 								},
 								"sink": {
-									"name": "formAbout",
-									"type": "String"
+									"name": "Form Description"
 								}
 							},
 							{
@@ -301,8 +318,7 @@
 									"path": "$['formAvailable'][0]"
 								},
 								"sink": {
-									"name": "Access",
-									"type": "String"
+									"name": "Access To"
 								}
 							},
 							{
@@ -310,8 +326,7 @@
 									"path": "$['formValues'][0]['id']['$numberInt']"
 								},
 								"sink": {
-									"name": "FormID",
-									"type": "String"
+									"name": "FormID"
 								}
 							},
 							{
@@ -319,8 +334,7 @@
 									"path": "$['formValues'][0]['question']"
 								},
 								"sink": {
-									"name": "Question",
-									"type": "String"
+									"name": "Question"
 								}
 							},
 							{
@@ -328,8 +342,7 @@
 									"path": "$['formValues'][0]['questionType']"
 								},
 								"sink": {
-									"name": "Question Type",
-									"type": "String"
+									"name": "Question Type"
 								}
 							},
 							{
@@ -337,11 +350,11 @@
 									"path": "$['formValues'][0]['options'][0]"
 								},
 								"sink": {
-									"name": "Options",
-									"type": "String"
+									"name": "Options"
 								}
 							}
-						]
+						],
+						"collectionReference": "$['formValues']"
 					}
 				},
 				"inputs": [
@@ -352,7 +365,7 @@
 				],
 				"outputs": [
 					{
-						"referenceName": "Forms_raw_data",
+						"referenceName": "Forms_Data_DB",
 						"type": "DatasetReference"
 					}
 				]
@@ -361,14 +374,7 @@
 				"name": "Questions Data",
 				"description": "copy from mongo server to sql db",
 				"type": "Copy",
-				"dependsOn": [
-					{
-						"activity": "Forms Data",
-						"dependencyConditions": [
-							"Completed"
-						]
-					}
-				],
+				"dependsOn": [],
 				"policy": {
 					"timeout": "0.12:00:00",
 					"retry": 0,
@@ -385,9 +391,7 @@
 					"sink": {
 						"type": "AzureSqlSink",
 						"writeBehavior": "insert",
-						"sqlWriterUseTableLock": false,
-						"tableOption": "autoCreate",
-						"disableMetricsCollection": false
+						"sqlWriterUseTableLock": false
 					},
 					"enableStaging": false,
 					"translator": {
@@ -398,8 +402,7 @@
 									"path": "$['id']['$numberInt']"
 								},
 								"sink": {
-									"name": "ID",
-									"type": "String"
+									"name": "FormID"
 								}
 							},
 							{
@@ -407,8 +410,7 @@
 									"path": "$['question']"
 								},
 								"sink": {
-									"name": "question",
-									"type": "String"
+									"name": "Question"
 								}
 							},
 							{
@@ -416,8 +418,7 @@
 									"path": "$['questionType']"
 								},
 								"sink": {
-									"name": "questionType",
-									"type": "String"
+									"name": "Question Type"
 								}
 							},
 							{
@@ -425,11 +426,11 @@
 									"path": "$['options'][0]"
 								},
 								"sink": {
-									"name": "Options",
-									"type": "String"
+									"name": "Options"
 								}
 							}
-						]
+						],
+						"collectionReference": "$['options']"
 					}
 				},
 				"inputs": [
@@ -440,7 +441,7 @@
 				],
 				"outputs": [
 					{
-						"referenceName": "Question_raw_data",
+						"referenceName": "Question_Data_DB",
 						"type": "DatasetReference"
 					}
 				]
