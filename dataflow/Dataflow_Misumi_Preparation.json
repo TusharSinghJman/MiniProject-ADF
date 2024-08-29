@@ -1,31 +1,19 @@
 {
-	"name": "Dataflow_Misumi_cleaning",
+	"name": "Dataflow_Misumi_Preparation",
 	"properties": {
 		"description": "Merging the individual items and product categories and cleaning process",
 		"type": "MappingDataFlow",
 		"typeProperties": {
 			"sources": [
 				{
-					"dataset": {
-						"referenceName": "Products_Misumi",
-						"type": "DatasetReference"
-					},
 					"name": "Misumi"
 				},
 				{
-					"dataset": {
-						"referenceName": "itemsData",
-						"type": "DatasetReference"
-					},
 					"name": "Items"
 				}
 			],
 			"sinks": [
 				{
-					"dataset": {
-						"referenceName": "Merged_Items_Products",
-						"type": "DatasetReference"
-					},
 					"name": "MergedData",
 					"description": "merge the products and items table"
 				}
@@ -44,26 +32,10 @@
 				}
 			],
 			"scriptLines": [
-				"source(output(",
-				"          {Item } as string,",
-				"          {Sub Category} as string,",
-				"          Category as string",
-				"     ),",
-				"     allowSchemaDrift: true,",
-				"     validateSchema: false,",
-				"     ignoreNoFilesFound: false) ~> Misumi",
-				"source(output(",
-				"          categoryCode as string,",
-				"          categoryName as string,",
-				"          seriesCode as string,",
-				"          seriesName as string,",
-				"          brandName as string,",
-				"          earliestShipping as string,",
-				"          description as string",
-				"     ),",
-				"     allowSchemaDrift: true,",
-				"     validateSchema: false,",
-				"     ignoreNoFilesFound: false) ~> Items",
+				"source(allowSchemaDrift: true,",
+				"     validateSchema: false) ~> Misumi",
+				"source(allowSchemaDrift: true,",
+				"     validateSchema: false) ~> Items",
 				"Items derive(description = regexReplace(description, \"^[a-zA-Z0-9_.-]\", \"\")) ~> updateDescriptionColumn",
 				"Misumi, updateDescriptionColumn join({Item } == categoryName,",
 				"     joinType:'inner',",
@@ -75,14 +47,8 @@
 				"     each(match(!in(['categoryCode', 'seriesCode'], name)), $$ = first($$))) ~> checkDuplicates",
 				"checkDuplicates sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
-				"     deletable:false,",
-				"     insertable:true,",
-				"     updateable:false,",
-				"     upsertable:false,",
-				"     format: 'table',",
 				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true,",
-				"     errorHandlingOption: 'stopOnFirstError') ~> MergedData"
+				"     skipDuplicateMapOutputs: true) ~> MergedData"
 			]
 		}
 	}

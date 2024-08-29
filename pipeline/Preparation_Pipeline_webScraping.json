@@ -17,7 +17,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "Dataflow_Misumi_cleaning",
+						"referenceName": "Dataflow_Misumi_Preparation",
 						"type": "DataFlowReference"
 					},
 					"compute": {
