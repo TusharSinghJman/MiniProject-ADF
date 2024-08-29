@@ -34,11 +34,6 @@
 						"mappings": [
 							{
 								"source": {
-									"path": "$['_id']['$oid']"
-								}
-							},
-							{
-								"source": {
 									"path": "$['Username']"
 								},
 								"sink": {
@@ -71,31 +66,6 @@
 								"sink": {
 									"name": "Password",
 									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"path": "$['__v']['$numberInt']"
-								}
-							},
-							{
-								"source": {
-									"path": "$['username']"
-								}
-							},
-							{
-								"source": {
-									"path": "$['designation']"
-								}
-							},
-							{
-								"source": {
-									"path": "$['email']"
-								}
-							},
-							{
-								"source": {
-									"path": "$['password']"
 								}
 							}
 						]
@@ -152,11 +122,6 @@
 						"mappings": [
 							{
 								"source": {
-									"path": "$['_id']['$oid']"
-								}
-							},
-							{
-								"source": {
 									"path": "$['Username']"
 								},
 								"sink": {
@@ -180,11 +145,6 @@
 								"sink": {
 									"name": "Password",
 									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"path": "$['__v']['$numberInt']"
 								}
 							}
 						]
@@ -241,11 +201,6 @@
 						"mappings": [
 							{
 								"source": {
-									"path": "$['_id']['$oid']"
-								}
-							},
-							{
-								"source": {
 									"path": "$['id']"
 								},
 								"sink": {
@@ -265,21 +220,19 @@
 							{
 								"source": {
 									"path": "$['Responses'][0]['Question']"
+								},
+								"sink": {
+									"name": "Question",
+									"type": "String"
 								}
 							},
 							{
 								"source": {
 									"path": "$['Responses'][0]['Response'][0]"
-								}
-							},
-							{
-								"source": {
-									"path": "$['Responses'][0]['_id']['$oid']"
-								}
-							},
-							{
-								"source": {
-									"path": "$['__v']['$numberInt']"
+								},
+								"sink": {
+									"name": "Answer",
+									"type": "String"
 								}
 							}
 						]
@@ -336,11 +289,6 @@
 						"mappings": [
 							{
 								"source": {
-									"path": "$['_id']['$oid']"
-								}
-							},
-							{
-								"source": {
 									"path": "$['formAbout']"
 								},
 								"sink": {
@@ -351,41 +299,46 @@
 							{
 								"source": {
 									"path": "$['formAvailable'][0]"
+								},
+								"sink": {
+									"name": "Access",
+									"type": "String"
 								}
 							},
 							{
 								"source": {
 									"path": "$['formValues'][0]['id']['$numberInt']"
+								},
+								"sink": {
+									"name": "FormID",
+									"type": "String"
 								}
 							},
 							{
 								"source": {
 									"path": "$['formValues'][0]['question']"
+								},
+								"sink": {
+									"name": "Question",
+									"type": "String"
 								}
 							},
 							{
 								"source": {
 									"path": "$['formValues'][0]['questionType']"
+								},
+								"sink": {
+									"name": "Question Type",
+									"type": "String"
 								}
 							},
 							{
 								"source": {
 									"path": "$['formValues'][0]['options'][0]"
-								}
-							},
-							{
-								"source": {
-									"path": "$['formValues'][0]['_id']['$oid']"
-								}
-							},
-							{
-								"source": {
-									"path": "$['formValues'][0]['__v']['$numberInt']"
-								}
-							},
-							{
-								"source": {
-									"path": "$['__v']['$numberInt']"
+								},
+								"sink": {
+									"name": "Options",
+									"type": "String"
 								}
 							}
 						]
@@ -442,12 +395,11 @@
 						"mappings": [
 							{
 								"source": {
-									"path": "$['_id']['$oid']"
-								}
-							},
-							{
-								"source": {
 									"path": "$['id']['$numberInt']"
+								},
+								"sink": {
+									"name": "ID",
+									"type": "String"
 								}
 							},
 							{
@@ -471,11 +423,10 @@
 							{
 								"source": {
 									"path": "$['options'][0]"
-								}
-							},
-							{
-								"source": {
-									"path": "$['__v']['$numberInt']"
+								},
+								"sink": {
+									"name": "Options",
+									"type": "String"
 								}
 							}
 						]
