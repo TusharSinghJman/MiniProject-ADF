@@ -1,5 +1,5 @@
 {
-	"name": "Pipeline1",
+	"name": "Ingestion_pipeline_fullstack",
 	"properties": {
 		"description": "To copy the data collections in the raw format stored in the mongo server into the SQL database",
 		"activities": [

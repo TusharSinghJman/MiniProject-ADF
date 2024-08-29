@@ -1,5 +1,5 @@
 {
-	"name": "Pipeline2",
+	"name": "Ingestion_pipeline_webScraping",
 	"properties": {
 		"description": "Copy the web scraped data from the blob to the SQL database",
 		"activities": [
