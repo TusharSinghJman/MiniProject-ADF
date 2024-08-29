@@ -7,6 +7,8 @@
 				"name": "Misumi Products",
 				"description": "Import the dataset from the blob to the SQL database",
 				"type": "Copy",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [],
 				"policy": {
 					"timeout": "0.12:00:00",
@@ -46,8 +48,7 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "Item ",
-									"type": "String",
+									"name": "ItemCategory",
 									"physicalType": "nvarchar"
 								}
 							},
@@ -58,8 +59,7 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "Sub Category",
-									"type": "String",
+									"name": "SubCategory",
 									"physicalType": "nvarchar"
 								}
 							},
@@ -85,16 +85,168 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "Products_Misumi",
+						"referenceName": "Misumi_ProductCategories",
 						"type": "DatasetReference"
 					}
 				],
 				"outputs": [
 					{
-						"referenceName": "Misumi_Products",
+						"referenceName": "Misumi_Products_DB",
 						"type": "DatasetReference"
 					}
 				]
+			},
+			{
+				"name": "Misumi Items per  Product Categories",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "Data flow for cleaning items table",
+						"dependencyConditions": [
+							"Completed"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"sink": {
+						"type": "AzureSqlSink",
+						"writeBehavior": "upsert",
+						"upsertSettings": {
+							"useTempDB": true,
+							"keys": [
+								"ItemCode"
+							]
+						},
+						"sqlWriterUseTableLock": false,
+						"tableOption": "autoCreate",
+						"disableMetricsCollection": false
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "categoryCode",
+									"type": "String"
+								},
+								"sink": {
+									"name": "CategoryCode"
+								}
+							},
+							{
+								"source": {
+									"name": "categoryName",
+									"type": "String"
+								},
+								"sink": {
+									"name": "CategoryName"
+								}
+							},
+							{
+								"source": {
+									"name": "seriesCode",
+									"type": "String"
+								},
+								"sink": {
+									"name": "ItemCode"
+								}
+							},
+							{
+								"source": {
+									"name": "seriesName",
+									"type": "String"
+								},
+								"sink": {
+									"name": "ItemName"
+								}
+							},
+							{
+								"source": {
+									"name": "brandName",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Brand"
+								}
+							},
+							{
+								"source": {
+									"name": "earliestShipping",
+									"type": "String"
+								},
+								"sink": {
+									"name": "EarliestShipping_in_Days"
+								}
+							},
+							{
+								"source": {
+									"name": "description",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Description"
+								}
+							}
+						],
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "Misumi_Items_DB",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "Misumi_Items_DB",
+						"type": "DatasetReference"
+					}
+				]
+			},
+			{
+				"name": "Data flow for cleaning items table",
+				"type": "ExecuteDataFlow",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataflow": {
+						"referenceName": "Clean_Items_per_Categories_Data",
+						"type": "DataFlowReference"
+					},
+					"compute": {
+						"coreCount": 8,
+						"computeType": "General"
+					},
+					"traceLevel": "Fine"
+				}
 			}
 		],
 		"annotations": []
