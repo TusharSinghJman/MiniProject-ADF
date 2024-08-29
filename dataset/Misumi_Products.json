@@ -1,0 +1,16 @@
+{
+	"name": "Misumi_Products",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureSQL_MiniProject2",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "misumi_products"
+		}
+	}
+}
