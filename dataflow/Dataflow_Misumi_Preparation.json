@@ -6,22 +6,33 @@
 		"typeProperties": {
 			"sources": [
 				{
+					"dataset": {
+						"referenceName": "Misumi_ProductCategories",
+						"type": "DatasetReference"
+					},
 					"name": "Misumi"
 				},
 				{
+					"dataset": {
+						"referenceName": "Misumi_Items_per_ProductCategories",
+						"type": "DatasetReference"
+					},
 					"name": "Items"
 				}
 			],
 			"sinks": [
 				{
+					"dataset": {
+						"referenceName": "Merged_Items_Products",
+						"type": "DatasetReference"
+					},
 					"name": "MergedData",
 					"description": "merge the products and items table"
 				}
 			],
 			"transformations": [
 				{
-					"name": "updateDescriptionColumn",
-					"description": "Update description column and change the non-word characters"
+					"name": "updateDescriptionColumn"
 				},
 				{
 					"name": "join"
@@ -32,10 +43,26 @@
 				}
 			],
 			"scriptLines": [
-				"source(allowSchemaDrift: true,",
-				"     validateSchema: false) ~> Misumi",
-				"source(allowSchemaDrift: true,",
-				"     validateSchema: false) ~> Items",
+				"source(output(",
+				"          {Item } as string,",
+				"          {Sub Category} as string,",
+				"          Category as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> Misumi",
+				"source(output(",
+				"          categoryCode as string,",
+				"          categoryName as string,",
+				"          seriesCode as string,",
+				"          seriesName as string,",
+				"          brandName as string,",
+				"          earliestShipping as string,",
+				"          description as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> Items",
 				"Items derive(description = regexReplace(description, \"^[a-zA-Z0-9_.-]\", \"\")) ~> updateDescriptionColumn",
 				"Misumi, updateDescriptionColumn join({Item } == categoryName,",
 				"     joinType:'inner',",
@@ -47,8 +74,14 @@
 				"     each(match(!in(['categoryCode', 'seriesCode'], name)), $$ = first($$))) ~> checkDuplicates",
 				"checkDuplicates sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
 				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true) ~> MergedData"
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError') ~> MergedData"
 			]
 		}
 	}
