@@ -23,7 +23,7 @@
 			"sinks": [
 				{
 					"dataset": {
-						"referenceName": "Prep_Merged_Items_Products",
+						"referenceName": "CleanedMergedData",
 						"type": "DatasetReference"
 					},
 					"name": "CleanedMergedData",
