@@ -8,10 +8,10 @@
 		"AzureSQL_MiniProject2_password": {
 			"value": ""
 		},
-		"MongoDbAtlas1_connectionString": {
+		"Blob_miniproject2_connectionString": {
 			"value": ""
 		},
-		"Blob_miniproject2_connectionString": {
+		"MongoDbAtlas1_connectionString": {
 			"value": ""
 		},
 		"AzureSQL_MiniProject2_properties_typeProperties_server": {

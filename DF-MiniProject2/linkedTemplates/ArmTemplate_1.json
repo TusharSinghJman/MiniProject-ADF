@@ -13,6 +13,587 @@
 	},
 	"resources": [
 		{
+			"name": "[concat(parameters('factoryName'), '/FormResponses_blob')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "Blob_miniproject2",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Json",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "formResponses.json",
+						"folderPath": "fullstack",
+						"container": "container-miniproject2"
+					}
+				},
+				"schema": {}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Ingestion_pipeline_fullstack')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "To copy the data collections in the raw format stored in the mongo server into the SQL database",
+				"activities": [
+					{
+						"name": "Users Data",
+						"description": "copy from mongo server to sql db",
+						"type": "Copy",
+						"state": "Inactive",
+						"onInactiveMarkAs": "Succeeded",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "MongoDbAtlasSource",
+								"batchSize": 100
+							},
+							"sink": {
+								"type": "AzureSqlSink",
+								"writeBehavior": "insert",
+								"sqlWriterUseTableLock": false,
+								"tableOption": "autoCreate",
+								"disableMetricsCollection": false
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"path": "$['Username']"
+										},
+										"sink": {
+											"name": "Username",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "$['Designations']"
+										},
+										"sink": {
+											"name": "Designation",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "$['Email']"
+										},
+										"sink": {
+											"name": "Email",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "$['Password']"
+										},
+										"sink": {
+											"name": "Password",
+											"type": "String"
+										}
+									}
+								]
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "Users",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "Users_Data_DB",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					},
+					{
+						"name": "Admin data",
+						"description": "copy from mongo server to sql db",
+						"type": "Copy",
+						"state": "Inactive",
+						"onInactiveMarkAs": "Succeeded",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "MongoDbAtlasSource",
+								"batchSize": 100
+							},
+							"sink": {
+								"type": "AzureSqlSink",
+								"writeBehavior": "insert",
+								"sqlWriterUseTableLock": false,
+								"tableOption": "autoCreate",
+								"disableMetricsCollection": false
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"path": "$['Username']"
+										},
+										"sink": {
+											"name": "Username",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "$['Email']"
+										},
+										"sink": {
+											"name": "Email",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "$['Password']"
+										},
+										"sink": {
+											"name": "Password",
+											"type": "String"
+										}
+									}
+								]
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "Admin",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "Admin_Data_DB",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					},
+					{
+						"name": "Form Responses data",
+						"description": "copy from mongo server to blob storage",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "MongoDbAtlasSource",
+								"batchSize": 100
+							},
+							"sink": {
+								"type": "JsonSink",
+								"storeSettings": {
+									"type": "AzureBlobStorageWriteSettings",
+									"copyBehavior": "FlattenHierarchy"
+								},
+								"formatSettings": {
+									"type": "JsonWriteSettings",
+									"filePattern": "arrayOfObjects"
+								}
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"path": "$['id']"
+										},
+										"sink": {
+											"name": "FormID"
+										}
+									},
+									{
+										"source": {
+											"path": "$['Username']"
+										},
+										"sink": {
+											"name": "Username"
+										}
+									},
+									{
+										"source": {
+											"path": "$['Responses'][0]['Question']"
+										},
+										"sink": {
+											"name": "Question"
+										}
+									},
+									{
+										"source": {
+											"path": "$['Responses'][0]['Response'][0]"
+										},
+										"sink": {
+											"name": "Response"
+										}
+									}
+								],
+								"collectionReference": "$['Responses']"
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "Form_Responses",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "FormResponses_blob",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					},
+					{
+						"name": "Forms Data",
+						"description": "copy from mongo server to blob storage",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "MongoDbAtlasSource",
+								"batchSize": 100
+							},
+							"sink": {
+								"type": "JsonSink",
+								"storeSettings": {
+									"type": "AzureBlobStorageWriteSettings",
+									"copyBehavior": "FlattenHierarchy"
+								},
+								"formatSettings": {
+									"type": "JsonWriteSettings",
+									"filePattern": "arrayOfObjects"
+								}
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"path": "$['formAbout']"
+										},
+										"sink": {
+											"name": "Form Description",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "$['formAvailable'][0]"
+										},
+										"sink": {
+											"name": "Access To",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "$['formValues'][0]['id']['$numberInt']"
+										},
+										"sink": {
+											"name": "FormID",
+											"type": "Int16"
+										}
+									},
+									{
+										"source": {
+											"path": "$['formValues'][0]['question']"
+										},
+										"sink": {
+											"name": "Question",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "$['formValues'][0]['questionType']"
+										},
+										"sink": {
+											"name": "Question Type",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "$['formValues'][0]['options'][0]"
+										},
+										"sink": {
+											"name": "Options",
+											"type": "String"
+										}
+									}
+								],
+								"collectionReference": "$['formValues']"
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "Forms",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "FormsData_blob",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					},
+					{
+						"name": "Questions Data",
+						"description": "copy from mongo server to sql db",
+						"type": "Copy",
+						"state": "Inactive",
+						"onInactiveMarkAs": "Succeeded",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "MongoDbAtlasSource",
+								"batchSize": 100
+							},
+							"sink": {
+								"type": "AzureSqlSink",
+								"writeBehavior": "insert",
+								"sqlWriterUseTableLock": false,
+								"tableOption": "autoCreate",
+								"disableMetricsCollection": false
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"path": "$['id']['$numberInt']"
+										},
+										"sink": {
+											"name": "FormID"
+										}
+									},
+									{
+										"source": {
+											"path": "$['question']"
+										},
+										"sink": {
+											"name": "Question"
+										}
+									},
+									{
+										"source": {
+											"path": "$['questionType']"
+										},
+										"sink": {
+											"name": "Question Type"
+										}
+									},
+									{
+										"source": {
+											"path": "$['options'][0]"
+										},
+										"sink": {
+											"name": "Options"
+										}
+									}
+								],
+								"collectionReference": "$['options']"
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "Questions",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "Question_Data_DB",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/FormResponses_blob')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Ingestion_pipeline_webScraping')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "Copy the web scraped data from the blob to the SQL database",
+				"activities": [
+					{
+						"name": "Misumi Products",
+						"description": "Import the dataset from the blob to the SQL database",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "DelimitedTextSource",
+								"storeSettings": {
+									"type": "AzureBlobStorageReadSettings",
+									"recursive": true,
+									"enablePartitionDiscovery": false
+								},
+								"formatSettings": {
+									"type": "DelimitedTextReadSettings"
+								}
+							},
+							"sink": {
+								"type": "AzureSqlSink",
+								"writeBehavior": "insert",
+								"sqlWriterUseTableLock": false,
+								"tableOption": "autoCreate",
+								"disableMetricsCollection": false
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"name": "Item ",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "ItemCategory",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "Sub Category",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "SubCategory",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "Category",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Category",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									}
+								],
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "Misumi_ProductCategories",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "Misumi_Products_DB",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"annotations": []
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/Dataflow_Misumi_Preparation')]",
 			"type": "Microsoft.DataFactory/factories/dataflows",
 			"apiVersion": "2018-06-01",
@@ -39,11 +620,11 @@
 					"sinks": [
 						{
 							"dataset": {
-								"referenceName": "Merged_Items_Products",
+								"referenceName": "CleanedMergedData",
 								"type": "DatasetReference"
 							},
-							"name": "MergedData",
-							"description": "merge the products and items table"
+							"name": "CleanedMergedData",
+							"description": "merge the products and items table and output the final cleaned column to the sink and store it in the DB"
 						}
 					],
 					"transformations": [
@@ -56,6 +637,14 @@
 						{
 							"name": "checkDuplicates",
 							"description": "drop duplicates rows"
+						},
+						{
+							"name": "duplicateColumns",
+							"description": "drop duplicate columns"
+						},
+						{
+							"name": "derivedShippingColumn",
+							"description": "if the shipping column has value as o replace it as same day "
 						}
 					],
 					"scriptLines": [
@@ -79,7 +668,7 @@
 						"     allowSchemaDrift: true,",
 						"     validateSchema: false,",
 						"     ignoreNoFilesFound: false) ~> Items",
-						"Items derive(description = regexReplace(description, \"^[a-zA-Z0-9_.-]\", \"\")) ~> updateDescriptionColumn",
+						"Items derive(description = regexReplace(description, \"<.*?>|[^\\\\sa-zA-Z0-9_.-]\", \" \")) ~> updateDescriptionColumn",
 						"Misumi, updateDescriptionColumn join({Item } == categoryName,",
 						"     joinType:'inner',",
 						"     matchType:'exact',",
@@ -87,77 +676,29 @@
 						"     broadcast: 'auto')~> join",
 						"join aggregate(groupBy(categoryCode,",
 						"          seriesCode),",
-						"     each(match(!in(['categoryCode', 'seriesCode'], name)), $$ = first($$))) ~> checkDuplicates",
-						"checkDuplicates sink(allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     deletable:false,",
-						"     insertable:true,",
-						"     updateable:false,",
-						"     upsertable:false,",
-						"     format: 'table',",
-						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true,",
-						"     errorHandlingOption: 'stopOnFirstError') ~> MergedData"
-					]
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/Clean_Items_per_Categories_Data')]",
-			"type": "Microsoft.DataFactory/factories/dataflows",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"type": "MappingDataFlow",
-				"typeProperties": {
-					"sources": [
-						{
-							"dataset": {
-								"referenceName": "Misumi_Items_per_ProductCategories",
-								"type": "DatasetReference"
-							},
-							"name": "ItemsPerCategories"
-						}
-					],
-					"sinks": [
-						{
-							"dataset": {
-								"referenceName": "Misumi_Items_DB",
-								"type": "DatasetReference"
-							},
-							"name": "ItemsSink"
-						}
-					],
-					"transformations": [
-						{
-							"name": "updateDescriptionColumn",
-							"description": "remove any invalid characters from the column"
-						}
-					],
-					"scriptLines": [
-						"source(output(",
-						"          categoryCode as string,",
-						"          categoryName as string,",
-						"          seriesCode as string,",
-						"          seriesName as string,",
-						"          brandName as string,",
-						"          earliestShipping as string,",
-						"          description as string",
+						"     each(match(!in(['categoryCode','seriesCode'],name)), $$ = first($$))) ~> checkDuplicates",
+						"checkDuplicates select(mapColumn(",
+						"          Series_Code = seriesCode,",
+						"          Item_Category_Code = categoryCode,",
+						"          Series_Name = seriesName,",
+						"          Item_Category = {Item },",
+						"          Sub_Category = {Sub Category},",
+						"          Category,",
+						"          Brand = brandName,",
+						"          EarliestShipping = earliestShipping,",
+						"          Description = description",
 						"     ),",
-						"     allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     ignoreNoFilesFound: false) ~> ItemsPerCategories",
-						"ItemsPerCategories derive(description = regexReplace(description, \"^[a-zA-Z0-9_.-]\", \"\")) ~> updateDescriptionColumn",
-						"updateDescriptionColumn sink(allowSchemaDrift: true,",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> duplicateColumns",
+						"duplicateColumns derive(EarliestShipping = iif(EarliestShipping == \"0\", \"Same day\", EarliestShipping + \" days\")) ~> derivedShippingColumn",
+						"derivedShippingColumn sink(allowSchemaDrift: true,",
 						"     validateSchema: false,",
 						"     deletable:false,",
 						"     insertable:true,",
 						"     updateable:false,",
 						"     upsertable:false,",
 						"     format: 'table',",
-						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true,",
-						"     errorHandlingOption: 'stopOnFirstError') ~> ItemsSink"
+						"     errorHandlingOption: 'stopOnFirstError') ~> CleanedMergedData"
 					]
 				}
 			},
@@ -190,7 +731,7 @@
 								"datasetParameters": {
 									"Misumi": {},
 									"Items": {},
-									"MergedData": {}
+									"CleanedMergedData": {}
 								},
 								"linkedServiceParameters": {}
 							},

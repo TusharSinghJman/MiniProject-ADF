@@ -11,13 +11,13 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'AzureSQL_MiniProject2'"
 		},
-		"MongoDbAtlas1_connectionString": {
-			"type": "secureString",
-			"metadata": "Secure string for 'connectionString' of 'MongoDbAtlas1'"
-		},
 		"Blob_miniproject2_connectionString": {
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'Blob_miniproject2'"
+		},
+		"MongoDbAtlas1_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'MongoDbAtlas1'"
 		},
 		"AzureSQL_MiniProject2_properties_typeProperties_server": {
 			"type": "string",
@@ -65,11 +65,11 @@
 					"AzureSQL_MiniProject2_password": {
 						"value": "[parameters('AzureSQL_MiniProject2_password')]"
 					},
-					"MongoDbAtlas1_connectionString": {
-						"value": "[parameters('MongoDbAtlas1_connectionString')]"
-					},
 					"Blob_miniproject2_connectionString": {
 						"value": "[parameters('Blob_miniproject2_connectionString')]"
+					},
+					"MongoDbAtlas1_connectionString": {
+						"value": "[parameters('MongoDbAtlas1_connectionString')]"
 					},
 					"AzureSQL_MiniProject2_properties_typeProperties_server": {
 						"value": "[parameters('AzureSQL_MiniProject2_properties_typeProperties_server')]"
