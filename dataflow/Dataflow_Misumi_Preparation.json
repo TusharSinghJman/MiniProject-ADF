@@ -23,15 +23,11 @@
 			"sinks": [
 				{
 					"dataset": {
-						"referenceName": "Prep_Merged_Items_Products_DB",
+						"referenceName": "Prep_Merged_Items_Products",
 						"type": "DatasetReference"
 					},
 					"name": "CleanedMergedData",
-					"description": "merge the products and items table and output the final cleaned column to the sink and store it in the DB",
-					"rejectedDataLinkedService": {
-						"referenceName": "Blob_miniproject2",
-						"type": "LinkedServiceReference"
-					}
+					"description": "merge the products and items table and output the final cleaned column to the sink and store it in the DB"
 				}
 			],
 			"transformations": [
