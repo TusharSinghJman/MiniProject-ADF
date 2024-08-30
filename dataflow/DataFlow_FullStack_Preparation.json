@@ -16,7 +16,7 @@
 						"referenceName": "FormResponses_Data_DB",
 						"type": "DatasetReference"
 					},
-					"name": "fromResponsesData"
+					"name": "formResponsesData"
 				}
 			],
 			"sinks": [
@@ -27,6 +27,9 @@
 					},
 					"name": "sink1",
 					"description": "add forms data to sink"
+				},
+				{
+					"name": "sink2"
 				}
 			],
 			"transformations": [
@@ -45,6 +48,13 @@
 				{
 					"name": "derivedOptionsColumn2",
 					"description": "Remove multiple commas"
+				},
+				{
+					"name": "derivedResponeColumn",
+					"description": "Combine the responses and make it as one column"
+				},
+				{
+					"name": "select1"
 				}
 			],
 			"scriptLines": [
@@ -73,10 +83,25 @@
 				"     validateSchema: false,",
 				"     isolationLevel: 'READ_UNCOMMITTED',",
 				"     format: 'table') ~> formsData",
-				"source(allowSchemaDrift: true,",
+				"source(output(",
+				"          {_id__$oid} as string,",
+				"          id as string,",
+				"          Username as string,",
+				"          Responses__Question as string,",
+				"          Responses__Response as string,",
+				"          Responses__Response__001 as string,",
+				"          Responses__Response__002 as string,",
+				"          Responses__Response__003 as string,",
+				"          Responses__Response__004 as string,",
+				"          Responses__Response__005 as string,",
+				"          Responses__Response__006 as string,",
+				"          {Responses___id__$oid} as string,",
+				"          {__v__$numberInt} as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     isolationLevel: 'READ_UNCOMMITTED',",
-				"     format: 'table') ~> fromResponsesData",
+				"     format: 'table') ~> formResponsesData",
 				"formsData derive({Form Access} = formAvailable__001 + \", \"\r",
 				"+ formAvailable__003 + \", \"\r",
 				"+ formAvailable__002 + \", \"\r",
@@ -98,7 +123,23 @@
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> dropColumns",
 				"dropColumns derive(Options = regexReplace(Options, \"[|]\", \", \")) ~> derivedOptionsColumns",
-				"derivedOptionsColumns derive({Form Access} = regexReplace({Form Access}, '[,]{2,}', '')) ~> derivedOptionsColumn2",
+				"derivedOptionsColumns derive({Form Access} = regexReplace({Form Access}, \"[,](2,)\", \"\")) ~> derivedOptionsColumn2",
+				"formResponsesData derive(Responses__Response = iif(trim(Responses__Response) == \"\",\r",
+				"trim(Responses__Response__001)+ \", \"+\r",
+				"trim(Responses__Response__002)+ \", \"+\r",
+				"trim(Responses__Response__003)+ \", \"+ \r",
+				"trim(Responses__Response__004)+ \", \"+\r",
+				"trim(Responses__Response__005)+ \", \"+\r",
+				"trim(Responses__Response__006) \r",
+				",Responses__Response)) ~> derivedResponeColumn",
+				"derivedResponeColumn select(mapColumn(",
+				"          id,",
+				"          Username,",
+				"          Question = Responses__Question,",
+				"          Response = Responses__Response",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> select1",
 				"derivedOptionsColumn2 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     deletable:false,",
@@ -108,7 +149,11 @@
 				"     format: 'table',",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true,",
-				"     errorHandlingOption: 'stopOnFirstError') ~> sink1"
+				"     errorHandlingOption: 'stopOnFirstError') ~> sink1",
+				"select1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> sink2"
 			]
 		}
 	}
