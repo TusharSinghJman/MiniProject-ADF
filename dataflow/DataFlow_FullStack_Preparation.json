@@ -1,0 +1,115 @@
+{
+	"name": "DataFlow_FullStack_Preparation",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "Forms_Data_DB",
+						"type": "DatasetReference"
+					},
+					"name": "formsData"
+				},
+				{
+					"dataset": {
+						"referenceName": "FormResponses_Data_DB",
+						"type": "DatasetReference"
+					},
+					"name": "fromResponsesData"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "Cleaned_Forms_Data",
+						"type": "DatasetReference"
+					},
+					"name": "sink1",
+					"description": "add forms data to sink"
+				}
+			],
+			"transformations": [
+				{
+					"name": "derivedFormAccess",
+					"description": "combine all the different form access available designations"
+				},
+				{
+					"name": "dropColumns",
+					"description": "drop all unwanted columns"
+				},
+				{
+					"name": "derivedOptionsColumns",
+					"description": "Correct the format"
+				},
+				{
+					"name": "derivedOptionsColumn2",
+					"description": "Remove multiple commas"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          {_id__$oid} as string,",
+				"          formAbout as string,",
+				"          formAvailable__001 as string,",
+				"          formAvailable__002 as string,",
+				"          formAvailable__003 as string,",
+				"          formAvailable__004 as string,",
+				"          formAvailable__005 as string,",
+				"          formAvailable__006 as string,",
+				"          formAvailable__007 as string,",
+				"          formAvailable__008 as string,",
+				"          formAvailable__009 as string,",
+				"          formAvailable__010 as string,",
+				"          {formValues__id__$numberInt} as string,",
+				"          formValues__question as string,",
+				"          formValues__questionType as string,",
+				"          {formValues__options__-} as string,",
+				"          {formValues___id__$oid} as string,",
+				"          {formValues____v__$numberInt} as string,",
+				"          {__v__$numberInt} as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> formsData",
+				"source(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> fromResponsesData",
+				"formsData derive({Form Access} = formAvailable__001 + \", \"\r",
+				"+ formAvailable__003 + \", \"\r",
+				"+ formAvailable__002 + \", \"\r",
+				"+ formAvailable__004 + \", \"\r",
+				"+ formAvailable__005 + \", \"\r",
+				"+ formAvailable__006 + \", \"\r",
+				"+ formAvailable__007 + \", \"\r",
+				"+ formAvailable__008 + \", \"\r",
+				"+ formAvailable__009 + \", \"\r",
+				"+ formAvailable__010) ~> derivedFormAccess",
+				"derivedFormAccess select(mapColumn(",
+				"          {_id__$oid},",
+				"          Name = formAbout,",
+				"          {Form Access},",
+				"          Question = formValues__question,",
+				"          Question_Type = formValues__questionType,",
+				"          Options = {formValues__options__-}",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> dropColumns",
+				"dropColumns derive(Options = regexReplace(Options, \"[|]\", \", \")) ~> derivedOptionsColumns",
+				"derivedOptionsColumns derive({Form Access} = regexReplace({Form Access}, '[,]{2,}', '')) ~> derivedOptionsColumn2",
+				"derivedOptionsColumn2 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError') ~> sink1"
+			]
+		}
+	}
+}
