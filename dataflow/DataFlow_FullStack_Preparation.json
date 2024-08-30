@@ -29,6 +29,10 @@
 					"description": "add forms data to sink"
 				},
 				{
+					"dataset": {
+						"referenceName": "Cleaned_Form_Responses",
+						"type": "DatasetReference"
+					},
 					"name": "sink2"
 				}
 			],
@@ -123,7 +127,7 @@
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> dropColumns",
 				"dropColumns derive(Options = regexReplace(Options, \"[|]\", \", \")) ~> derivedOptionsColumns",
-				"derivedOptionsColumns derive({Form Access} = regexReplace({Form Access}, \"[,](2,)\", \"\")) ~> derivedOptionsColumn2",
+				"derivedOptionsColumns derive({Form Access} = replace({Form Access}, ',,', '')) ~> derivedOptionsColumn2",
 				"formResponsesData derive(Responses__Response = iif(trim(Responses__Response) == \"\",\r",
 				"trim(Responses__Response__001)+ \", \"+\r",
 				"trim(Responses__Response__002)+ \", \"+\r",
@@ -152,8 +156,14 @@
 				"     errorHandlingOption: 'stopOnFirstError') ~> sink1",
 				"select1 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
 				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true) ~> sink2"
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError') ~> sink2"
 			]
 		}
 	}

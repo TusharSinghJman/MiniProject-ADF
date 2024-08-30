@@ -1,0 +1,16 @@
+{
+	"name": "Cleaned_Form_Responses",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureSQL_MiniProject2",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "prep",
+			"table": "formResponses"
+		}
+	}
+}
