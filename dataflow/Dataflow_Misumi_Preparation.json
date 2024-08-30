@@ -23,11 +23,15 @@
 			"sinks": [
 				{
 					"dataset": {
-						"referenceName": "Merged_Items_Products",
+						"referenceName": "Prep_Merged_Items_Products_DB",
 						"type": "DatasetReference"
 					},
-					"name": "MergedData",
-					"description": "merge the products and items table"
+					"name": "CleanedMergedData",
+					"description": "merge the products and items table and output the final cleaned column to the sink and store it in the DB",
+					"rejectedDataLinkedService": {
+						"referenceName": "Blob_miniproject2",
+						"type": "LinkedServiceReference"
+					}
 				}
 			],
 			"transformations": [
@@ -40,6 +44,14 @@
 				{
 					"name": "checkDuplicates",
 					"description": "drop duplicates rows"
+				},
+				{
+					"name": "duplicateColumns",
+					"description": "drop duplicate columns"
+				},
+				{
+					"name": "derivedShippingColumn",
+					"description": "if the shipping column has value as o replace it as same day "
 				}
 			],
 			"scriptLines": [
@@ -63,7 +75,7 @@
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     ignoreNoFilesFound: false) ~> Items",
-				"Items derive(description = regexReplace(description, \"^[a-zA-Z0-9_.-]\", \"\")) ~> updateDescriptionColumn",
+				"Items derive(description = regexReplace(description, \"<.*?>|[^\\\\sa-zA-Z0-9_.-]\", \" \")) ~> updateDescriptionColumn",
 				"Misumi, updateDescriptionColumn join({Item } == categoryName,",
 				"     joinType:'inner',",
 				"     matchType:'exact',",
@@ -71,17 +83,29 @@
 				"     broadcast: 'auto')~> join",
 				"join aggregate(groupBy(categoryCode,",
 				"          seriesCode),",
-				"     each(match(!in(['categoryCode', 'seriesCode'], name)), $$ = first($$))) ~> checkDuplicates",
-				"checkDuplicates sink(allowSchemaDrift: true,",
+				"     each(match(!in(['categoryCode','seriesCode'],name)), $$ = first($$))) ~> checkDuplicates",
+				"checkDuplicates select(mapColumn(",
+				"          Series_Code = seriesCode,",
+				"          Item_Category_Code = categoryCode,",
+				"          Series_Name = seriesName,",
+				"          Item_Category = {Item },",
+				"          Sub_Category = {Sub Category},",
+				"          Category,",
+				"          Brand = brandName,",
+				"          EarliestShipping = earliestShipping,",
+				"          Description = description",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> duplicateColumns",
+				"duplicateColumns derive(EarliestShipping = iif(EarliestShipping == \"0\", \"Same day\", EarliestShipping + \" days\")) ~> derivedShippingColumn",
+				"derivedShippingColumn sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     deletable:false,",
 				"     insertable:true,",
 				"     updateable:false,",
 				"     upsertable:false,",
 				"     format: 'table',",
-				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true,",
-				"     errorHandlingOption: 'stopOnFirstError') ~> MergedData"
+				"     errorHandlingOption: 'stopOnFirstError') ~> CleanedMergedData"
 			]
 		}
 	}

@@ -1,0 +1,16 @@
+{
+	"name": "Prep_Merged_Items_Products_DB",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureSQL_MiniProject2",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "prep",
+			"table": "merged_items_products"
+		}
+	}
+}
