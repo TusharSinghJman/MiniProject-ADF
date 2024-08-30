@@ -1,0 +1,20 @@
+{
+	"name": "FormsData_blob",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "Blob_miniproject2",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Json",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "forms_data.json",
+				"folderPath": "fullstack",
+				"container": "container-miniproject2"
+			}
+		},
+		"schema": {}
+	}
+}
