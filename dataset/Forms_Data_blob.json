@@ -1,0 +1,101 @@
+{
+	"name": "Forms_Data_blob",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "Blob_miniproject2",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "forms.csv",
+				"folderPath": "fullstack",
+				"container": "container-miniproject2"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": [
+			{
+				"name": "_id__$oid",
+				"type": "String"
+			},
+			{
+				"name": "formAbout",
+				"type": "String"
+			},
+			{
+				"name": "formAvailable__001",
+				"type": "String"
+			},
+			{
+				"name": "formAvailable__002",
+				"type": "String"
+			},
+			{
+				"name": "formAvailable__003",
+				"type": "String"
+			},
+			{
+				"name": "formAvailable__004",
+				"type": "String"
+			},
+			{
+				"name": "formAvailable__005",
+				"type": "String"
+			},
+			{
+				"name": "formAvailable__006",
+				"type": "String"
+			},
+			{
+				"name": "formAvailable__007",
+				"type": "String"
+			},
+			{
+				"name": "formAvailable__008",
+				"type": "String"
+			},
+			{
+				"name": "formAvailable__009",
+				"type": "String"
+			},
+			{
+				"name": "formAvailable__010",
+				"type": "String"
+			},
+			{
+				"name": "formValues__id__$numberInt",
+				"type": "String"
+			},
+			{
+				"name": "formValues__question",
+				"type": "String"
+			},
+			{
+				"name": "formValues__questionType",
+				"type": "String"
+			},
+			{
+				"name": "formValues__options__-",
+				"type": "String"
+			},
+			{
+				"name": "formValues___id__$oid",
+				"type": "String"
+			},
+			{
+				"name": "formValues____v__$numberInt",
+				"type": "String"
+			},
+			{
+				"name": "__v__$numberInt",
+				"type": "String"
+			}
+		]
+	}
+}
