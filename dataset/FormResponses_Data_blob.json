@@ -1,0 +1,77 @@
+{
+	"name": "FormResponses_Data_blob",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "Blob_miniproject2",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "formResponses.csv",
+				"folderPath": "fullstack",
+				"container": "container-miniproject2"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": [
+			{
+				"name": "_id__$oid",
+				"type": "String"
+			},
+			{
+				"name": "id",
+				"type": "String"
+			},
+			{
+				"name": "Username",
+				"type": "String"
+			},
+			{
+				"name": "Responses__Question",
+				"type": "String"
+			},
+			{
+				"name": "Responses__Response",
+				"type": "String"
+			},
+			{
+				"name": "Responses__Response__001",
+				"type": "String"
+			},
+			{
+				"name": "Responses__Response__002",
+				"type": "String"
+			},
+			{
+				"name": "Responses__Response__003",
+				"type": "String"
+			},
+			{
+				"name": "Responses__Response__004",
+				"type": "String"
+			},
+			{
+				"name": "Responses__Response__005",
+				"type": "String"
+			},
+			{
+				"name": "Responses__Response__006",
+				"type": "String"
+			},
+			{
+				"name": "Responses___id__$oid",
+				"type": "String"
+			},
+			{
+				"name": "__v__$numberInt",
+				"type": "String"
+			}
+		]
+	}
+}
